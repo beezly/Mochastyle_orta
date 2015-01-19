@@ -36,6 +36,12 @@ function inlineCloudapp(node, link) {
 	inlineImg(node);
 }
 
+function inlineDropbox(node, link) {
+  var xmlHttp = new XMLHttpRequest();
+  node.href = "https://dl-web.dropbox.com/"+link;
+  inlineImg(node);
+}
+
 function inlineVideo(node)
 {
 	var vwrap = document.createElement("div");
@@ -83,17 +89,21 @@ function doMagicLinks()
               func: function(node, video) { inlineIframe(node, this.embed+video) },
             },
             cloudapp:
-			{ regex: /cl.ly\/(.+)/,
-			  func: function(node, link) { inlineCloudapp(node, link) }
-		    },
-		    video: 
-		    { regex: /\.mov/ig,
-			  func: function(node, unused) { inlineVideo(node) } 
-		    },
-		    image:
-		    { regex: /\.(png|jpg|jpeg|gif)$/ig,
-			  func: function(node, unused) { inlineImg(node) }
-			}
+			      { regex: /cl.ly\/(.+)/,
+			        func: function(node, link) { inlineCloudapp(node, link) }
+		        },
+		        video: 
+		        { regex: /\.mov/ig,
+			        func: function(node, unused) { inlineVideo(node) } 
+		        },
+		        image:
+		        { regex: /\.(png|jpg|jpeg|gif)$/ig,
+			        func: function(node, unused) { inlineImg(node) }
+			      },
+            dropbox:
+            { regex: /www.dropbox.com\/(.+)/,
+              func: function(node, link) { inlineDropbox( node, link ) }
+            }
           }
 
 		var source_key, match, attr_key;
